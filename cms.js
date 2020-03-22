@@ -31,7 +31,8 @@ function promptUser() {
                 "View all employees",
                 "View all departments",
                 "View all roles",
-                "Update an employees role"
+                "Update an employees role",
+                "Update an employees manager"
             ]
         }).then(function (answer) {
             switch (answer.action) {
@@ -154,7 +155,7 @@ function addEmployee() {
                         name: "role"
                     },
                     {
-                        message: "Input the id of this employees manager or 0 if no manager applys.",
+                        message: "Input the id of this employees manager or skip if N/A.",
                         type: "input",
                         name: "manager"
                     },
