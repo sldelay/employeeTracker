@@ -62,6 +62,10 @@ function promptUser() {
                 case "Update an employees role":
                     updateRole();
                     break;
+
+                case "Update an employees manager":
+                    updateManager();
+                    break;
             }
         });
 }
@@ -217,7 +221,7 @@ function updateRole() {
                     name: "id"
                 },
                 {
-                    message: "What is the id of the new role you would like to assign",
+                    message: "What is the id of the new role you would like to assign?",
                     type: "input",
                     name: "role"
                 }
@@ -246,3 +250,42 @@ function updateRole() {
     });
 };
 
+function updateManager() {
+    connection.query("SELECT * FROM employee", function (err, res) {
+        if (err) throw err;
+        console.table(res);
+
+        inquirer.prompt([
+            {
+                message: "What is the id for the employee you wish to update?",
+                type: "input",
+                name: "id"
+            },
+            {
+                message: "What is the id of the new manager you would like to assign?",
+                type: "input",
+                name: "manager"
+            }
+        ]).then(function (answer) {
+            let id = answer.id;
+            let manager = answer.manager;
+
+            connection.query("UPDATE employee SET ? WHERE ?",
+                [
+                    {
+                        manager_id: manager
+                    },
+                    {
+                        id: id
+                    }
+                ],
+                function (err, res) {
+                    if (err) throw err;
+
+                    console.log("Employee has been updated!");
+                    promptUser();
+                }
+            );
+        });
+    });
+};
